@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Background Remover Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
@@ -19,9 +31,12 @@
 
             <!-- Upload Input -->
             <div>
-                <label for="image" class="block text-sm font-medium">Upload Image</label>
-                <input type="file" name="image" id="image" accept="image/*"
-                    class="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-blue-500" onchange="previewImage(this)">
+                <label for="image" class="block text-sm font-medium sr-only">Upload Image</label>
+                <label for="image" class="flex items-center justify-center w-full p-2 border rounded-md cursor-pointer">
+                    <span class="text-blue-500">Upload</span>
+                    <input type="file" name="image" id="image" accept="image/*" class="sr-only"
+                        onchange="previewImage(this)">
+                </label>
             </div>
 
             <!-- Image Preview Section -->
@@ -42,7 +57,7 @@
             <h2 class="text-2xl font-semibold mb-2 text-center text-blue-500">Processed Image</h2>
             <img src="{{ processed_image_url }}" alt="Processed Image"
                 class="mx-auto max-w-full border rounded-md shadow-md">
-            
+
             <!-- Download Button for Processed Image -->
             <a href="{{ processed_image_url }}" download="processed_image.png"
                 class="block w-full mt-2 bg-green-500 text-white py-2 rounded-md text-center hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300">
