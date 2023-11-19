@@ -7,6 +7,7 @@ class UserSession(models.Model):
 class Images(models.Model):
     image = models.ImageField(upload_to='images/')
     image_name = models.CharField(max_length=100,blank=True,null=True)
+    converted_image = models.ImageField(upload_to='bg_removed_images/',blank=True,null=True)
     session = models.ForeignKey(UserSession, on_delete=models.CASCADE, verbose_name="Related Session")
 
     def __str__(self):

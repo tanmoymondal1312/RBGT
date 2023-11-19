@@ -45,6 +45,12 @@
         </form>
     </div>
 
+    {% if processed_image_path %}
+    <a href="{% url 'download_processed_image' %}" download>
+        <button>Download Processed Image</button>
+    </a>
+    {% endif %}
+
     <script>
         function previewImage(input) {
             var preview = document.getElementById('preview');
