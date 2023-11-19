@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import PictureUploadForm
 from .models import UserSession, Images
+from XXX.RBGT import *
+
 
 # ... (other imports)
 
@@ -37,6 +39,8 @@ def index(request):
             with open(file_path, 'wb') as file:
                 for chunk in form.cleaned_data['image'].chunks():
                     file.write(chunk)
+            
+            remove_background(unique_name)     
 
             return redirect('index')
     else:
