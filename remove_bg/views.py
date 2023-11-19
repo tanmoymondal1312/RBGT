@@ -1,7 +1,12 @@
+from django.utils import timezone
+import uuid
+import os
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import UserSession, Images  # Import Images model
-from .forms import PictureUploadForm  # Correct the import statement
+from .forms import PictureUploadForm
+from .models import UserSession, Images
+
+# ... (other imports)
 
 def index(request):
     if not request.session.session_key:
@@ -14,8 +19,24 @@ def index(request):
         form = PictureUploadForm(request.POST, request.FILES)
         if form.is_valid():
             user_session = UserSession.objects.get(session_key=request.session.session_key)
-            image_instance = Images(session=user_session, image=form.cleaned_data['image'])
+
+            original_file_name, file_extension = os.path.splitext(form.cleaned_data['image'].name)
+            unique_name = f"{str(uuid.uuid4())[:8]}{file_extension}"
+
+            # Save the original file name in the 'image_name' attribute
+            image_name = original_file_name
+
+            # Create a new Images instance with the unique name and original file name
+            image_instance = Images(session=user_session, image=unique_name, image_name=image_name)
+
+            # Save the image instance
             image_instance.save()
+
+            # Save the uploaded file with the unique name
+            file_path = os.path.join('media', 'images', unique_name)
+            with open(file_path, 'wb') as file:
+                for chunk in form.cleaned_data['image'].chunks():
+                    file.write(chunk)
 
             return redirect('index')
     else:
