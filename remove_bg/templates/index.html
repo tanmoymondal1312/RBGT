@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -24,35 +25,51 @@
 
     <div class="bg-white p-8 rounded-md shadow-md w-96 max-w-full mx-auto">
         <h1 class="text-3xl font-bold mb-6 text-center text-blue-500">Background Remover</h1>
-
         <!-- Image Upload Form -->
-        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data" class="space-y-4">
+        <form onSubmit="{% url 'index' %}" id="myForm" method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
 
             <!-- Upload Input -->
             <div>
-                <label for="image" class="block text-sm font-medium sr-only">Upload Image</label>
-                <label for="image" class="flex items-center justify-center w-full p-2 border rounded-md cursor-pointer">
-                    <span class="text-blue-500">Upload</span>
+                {% comment %} <label for="image" class="block text-sm font-medium sr-only">Upload Image</label> {% endcomment %}
+                <label for="image" class="flex items-center justify-center gap-2 w-full bg-blue-500 hover:bg-blue-300 text-white font-bold py-4 border rounded-full cursor-pointer">
+                    <svg fill="#FFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                    </svg>
+                    <span class=" text-xl ">Upload</span>
+                    
                     <input type="file" name="image" id="image" accept="image/*" class="sr-only"
                         onchange="previewImage(this)">
                 </label>
             </div>
 
-            <!-- Image Preview Section -->
+
+
+            <!-- Image Preview and Remove Background Button Section -->
             <div id="image-preview" class="text-center hidden">
-                <img id="preview" class="max-w-full h-auto mx-auto rounded-md shadow-md" alt="Image Preview">
+                <div class="relative">
+                    <img id="preview" class="max-w-full h-auto mx-auto rounded-md shadow-md filter" alt="Image Preview" style="position: relative;">
+                    <img id="animationImg" src="{% static 'image/loading.gif'%}" class="max-w-full h-auto mx-auto hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" alt="AniImage" style="position: absolute;">
+                </div>
+                
+                
+                <!-- Remove Background Button -->
+                <div onClick="removeBtnClick()" class="w-full bg-blue-500 text-white mt-10 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
+                    Remove Background
+                </div>
             </div>
 
-            <!-- Remove Background Button -->
-            <button type="submit"
-                class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
-                Remove Background
-            </button>
+            
+
         </form>
 
         <!-- Processed Image Section -->
         {% if processed_image_url %}
+
+
+
+
         <div class="mt-4">
             <h2 class="text-2xl font-semibold mb-2 text-center text-blue-500">Processed Image</h2>
             <img src="{{ processed_image_url }}" alt="Processed Image"
@@ -67,6 +84,28 @@
         {% endif %}
 
         <script>
+
+            function removeBtnClick() {
+
+                var animationImg = document.getElementById('animationImg');
+                animationImg.classList.remove("hidden");
+
+                var preview = document.getElementById('preview');
+                preview.classList.add("blur-md");
+
+
+
+                var myForm = document.getElementById('myForm');
+                myForm.submit();
+
+                console.log(animationImg)
+            }
+
+           {% comment %} const removeBtnClick = () = {
+                console.log("jdsfgasdjkfgdjkfghjk")
+            }   {% endcomment %}
+
+
             function previewImage(input) {
                 var preview = document.getElementById('preview');
                 var imagePreview = document.getElementById('image-preview');
