@@ -25,13 +25,12 @@
 
     <div class="bg-white p-8 rounded-md shadow-md w-96 max-w-full mx-auto">
         <h1 class="text-3xl font-bold mb-6 text-center text-blue-500">Background Remover</h1>
-        <!-- Image Upload Form -->
+        
         <form onSubmit="{% url 'index' %}" id="myForm" method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
 
-            <!-- Upload Input -->
+            
             <div>
-                {% comment %} <label for="image" class="block text-sm font-medium sr-only">Upload Image</label> {% endcomment %}
                 <label for="image" class="flex items-center justify-center gap-2 w-full bg-blue-500 hover:bg-blue-300 text-white font-bold py-4 border rounded-full cursor-pointer">
                     <svg fill="#FFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h24v24H0z" fill="none"/>
@@ -46,15 +45,12 @@
 
 
 
-            <!-- Image Preview and Remove Background Button Section -->
             <div id="image-preview" class="text-center hidden">
                 <div class="relative">
                     <img id="preview" class="max-w-full h-auto mx-auto rounded-md shadow-md filter" alt="Image Preview" style="position: relative;">
                     <img id="animationImg" src="{% static 'image/loading.gif'%}" class="max-w-full h-auto mx-auto hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" alt="AniImage" style="position: absolute;">
                 </div>
                 
-                
-                <!-- Remove Background Button -->
                 <div onClick="removeBtnClick()" class="w-full bg-blue-500 text-white mt-10 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
                     Remove Background
                 </div>
@@ -64,7 +60,6 @@
 
         </form>
 
-        <!-- Processed Image Section -->
         {% if processed_image_url %}
 
 
@@ -75,7 +70,6 @@
             <img src="{{ processed_image_url }}" alt="Processed Image"
                 class="mx-auto max-w-full border rounded-md shadow-md">
 
-            <!-- Download Button for Processed Image -->
             <a href="{{ processed_image_url }}" download="processed_image.png"
                 class="block w-full mt-2 bg-green-500 text-white py-2 rounded-md text-center hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300">
                 Download Processed Image
@@ -100,11 +94,6 @@
 
                 console.log(animationImg)
             }
-
-           {% comment %} const removeBtnClick = () = {
-                console.log("jdsfgasdjkfgdjkfghjk")
-            }   {% endcomment %}
-
 
             function previewImage(input) {
                 var preview = document.getElementById('preview');
